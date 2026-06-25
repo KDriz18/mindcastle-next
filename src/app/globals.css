@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
+
+:root {
+  --background: #f8f7f3;
+  --surface: #ffffff;
+
+  --primary: #002c43;
+  --primary-light: #0f415d;
+
+  --accent: #c8a46a;
+
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --border: #ebe7df;
+
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-inter);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+.container-custom {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.heading-font {
+  font-family: var(--font-heading);
+}
+
+.section-padding {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border-radius: 18px;
+  padding: 16px 28px;
+  font-weight: 500;
+  transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 28px;
+  font-weight: 500;
+}
+
+.card-surface {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+}
+
+.soft-shadow {
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.05),
+    0 2px 8px rgba(0, 0, 0, 0.03);
+}
