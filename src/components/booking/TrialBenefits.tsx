@@ -7,7 +7,7 @@ import {
 
 export default function TrialBenefits() {
   const benefits = [
-    "45-minute LIVE trial session",
+    "Online LIVE trial session",
     "Skill assessment",
     "Personalized learning roadmap",
     "Expert coach consultation",
@@ -51,12 +51,12 @@ export default function TrialBenefits() {
 
           <div className="flex items-center gap-4">
             <FaClock className="text-[#C8A46A]" />
-            <span>Approximately 45 Minutes</span>
+            <span>Approximately 30 Minutes</span>
           </div>
 
           <div className="flex items-center gap-4">
             <FaUserGraduate className="text-[#C8A46A]" />
-            <span>Conducted by an Expert Coach</span>
+            <span>Conducted by our Expert Coach</span>
           </div>
 
         </div>

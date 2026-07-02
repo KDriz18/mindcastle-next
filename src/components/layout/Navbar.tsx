@@ -4,16 +4,32 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { siteConfig } from "@/constants/site";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+
+  const pathname = usePathname();
+
+const handleHomeClick = (
+  e: React.MouseEvent<HTMLAnchorElement>
+) => {
+  if (pathname === "/") {
+    e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+};
 
   return (
     <header className="sticky top-0 z-50 bg-[#f8f7f3]/90 backdrop-blur-md">
       <div className="container-custom py-5">
         <div className="bg-white border border-[#ebe7df] rounded-full px-6 py-4 soft-shadow">
           <div className="flex items-center justify-between">
-            <Link href="/">
+            <Link href="/" onClick={handleHomeClick}>
               <div>
                 <h2 className="heading-font text-2xl text-[#002C43]">
                   Mindcastle
@@ -28,18 +44,26 @@ export default function Navbar() {
             <nav className="hidden lg:flex items-center gap-10">
               {siteConfig.navigation.map((item) => (
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm text-[#1F2937] hover:text-[#002C43]"
-                >
+  key={item.href}
+  href={item.href}
+  onClick={
+    item.href === "/"
+      ? handleHomeClick
+      : undefined
+  }
+  className="text-sm text-[#1F2937] hover:text-[#002C43]"
+>
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            <button className="btn-primary hidden lg:block">
-              Book Free Trial
-            </button>
+            <Link
+  href="/book-trial"
+  className="btn-primary hidden lg:inline-flex items-center justify-center"
+>
+  Book Free Trial
+</Link>
 
             <button
               className="lg:hidden"
@@ -55,10 +79,16 @@ export default function Navbar() {
             <div className="flex flex-col gap-5">
               {siteConfig.navigation.map((item) => (
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                >
+  key={item.href}
+  href={item.href}
+  onClick={(e) => {
+    setOpen(false);
+
+    if (item.href === "/") {
+      handleHomeClick(e);
+    }
+  }}
+>
                   {item.label}
                 </Link>
               ))}

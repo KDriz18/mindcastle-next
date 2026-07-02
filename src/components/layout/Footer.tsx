@@ -7,6 +7,7 @@ import {
   FaPhoneAlt,
   FaGlobe,
 } from "react-icons/fa";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const countries = [
@@ -17,6 +18,21 @@ export default function Footer() {
     "in",
     "ae",
   ];
+
+  const pathname = usePathname();
+
+const handleHomeClick = (
+  e: React.MouseEvent<HTMLAnchorElement>
+) => {
+  if (pathname === "/") {
+    e.preventDefault();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+};
 
   return (
     <footer className="mt-20 border-t border-[#E5E0D8] bg-[#FBFAF7]">
@@ -80,23 +96,28 @@ export default function Footer() {
             </h3>
 
             <div className="flex flex-col gap-4 mt-6">
-              {[
-                ["Home", "/"],
-                ["About Us", "/about"],
-                ["Our Classes", "/classes"],
-                ["Achievements", "/achievements"],
-                ["Testimonials", "/testimonials"],
-                ["Contact Us", "/contact"],
-              ].map(([label, href]) => (
-                <Link
-                  key={label}
-                  href={href}
-                  className="text-[#6B7280] transition hover:text-[#002C43]"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
+  {[
+    ["Home", "/"],
+    ["About Us", "/about"],
+    ["Our Classes", "/classes"],
+    ["Achievements", "/achievements"],
+    ["Testimonials", "/testimonials"],
+    ["Contact Us", "/contact"],
+  ].map(([label, href]) => (
+    <Link
+      key={label}
+      href={href}
+      onClick={
+        href === "/"
+          ? handleHomeClick
+          : undefined
+      }
+      className="text-[#6B7280] transition hover:text-[#002C43]"
+    >
+      {label}
+    </Link>
+  ))}
+</div>
           </div>
 
           {/* Contact */}
@@ -119,9 +140,12 @@ export default function Footer() {
 
             </div>
 
-            <button className="btn-primary mt-8">
-              Book Free Trial
-            </button>
+            <Link
+  href="/book-trial"
+  className="btn-primary mt-8 inline-flex items-center justify-center"
+>
+  Book Free Trial
+</Link>
           </div>
         </div>
 
