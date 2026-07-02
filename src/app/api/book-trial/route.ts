@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { trialBookingSchema } from "@/lib/validation/trialBooking";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,6 +10,18 @@ const supabase = createClient(
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const validation = trialBookingSchema.safeParse(body);
+    console.log("Validation result:", validation);
+
+if (!validation.success) {
+  return NextResponse.json(
+    {
+      success: false,
+      errors: validation.error.flatten(),
+    },
+    { status: 400 }
+  );
+}
 
     const { error } = await supabase
       .from("trial_bookings")

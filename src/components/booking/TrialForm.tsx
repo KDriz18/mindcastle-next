@@ -41,6 +41,7 @@ const initialData: TrialFormData = {
 export default function TrialForm() {
   const [step, setStep] = useState(1);
 const [loading, setLoading] = useState(false);
+const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] =
     useState<TrialFormData>(initialData);
@@ -117,6 +118,8 @@ const [loading, setLoading] = useState(false);
           <ParentStep
             data={formData}
             updateField={updateField}
+            errors={errors}
+            setErrors={setErrors}
             onNext={() => setStep(2)}
           />
         ) : (
