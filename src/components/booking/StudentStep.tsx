@@ -10,6 +10,14 @@ type Props = {
     field: keyof TrialFormData,
     value: any
   ) => void;
+
+  updateAndValidate: (
+  field: keyof TrialFormData,
+  value: any
+) => void;
+
+errors: Record<string, string>;
+
   onBack: () => void;
   onSubmit: () => void;
 };
@@ -42,6 +50,8 @@ export default function StudentStep({
   loading,
   data,
   updateField,
+  updateAndValidate,
+  errors,
   onBack,
   onSubmit,
 }: Props) {
@@ -90,13 +100,24 @@ export default function StudentStep({
             type="text"
             value={data.studentName}
             onChange={(e) =>
-              updateField(
+              updateAndValidate(
                 "studentName",
                 e.target.value
               )
             }
-            className="w-full rounded-2xl border border-[#E5E7EB] px-5 py-4 outline-none focus:border-[#C8A46A]"
+            className={`w-full rounded-2xl border px-5 py-4 outline-none transition-colors ${
+  errors.studentName
+    ? "border-red-500 focus:border-red-500"
+    : "border-[#E5E7EB] focus:border-[#C8A46A]"
+}`}
           />
+
+{errors.studentName && (
+  <p className="mt-2 text-sm text-red-500">
+    {errors.studentName}
+  </p>
+)}
+
         </div>
 
         <div>
@@ -106,15 +127,29 @@ export default function StudentStep({
 
           <input
             type="number"
-            min={4}
-            max={18}
+            min={6}
+            max={99}
             value={data.age}
             onChange={(e) =>
-              updateField("age", e.target.value)
-            }
+            updateAndValidate(
+              "age",
+              e.target.value
+            )
+          }
             placeholder="8"
-            className="w-full rounded-2xl border border-[#E5E7EB] px-5 py-4 outline-none focus:border-[#C8A46A]"
+            className={`w-full rounded-2xl border px-5 py-4 outline-none transition-colors ${
+  errors.age
+    ? "border-red-500 focus:border-red-500"
+    : "border-[#E5E7EB] focus:border-[#C8A46A]"
+}`}
           />
+
+          {errors.age && (
+  <p className="mt-2 text-sm text-red-500">
+    {errors.age}
+  </p>
+)}
+
         </div>
 
         <div>

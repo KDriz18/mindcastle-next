@@ -5,6 +5,7 @@ import ParentStep from "./ParentStep";
 import StudentStep from "./StudentStep";
 import SuccessStep from "./SuccessStep";
 import TrialBenefits from "./TrialBenefits";
+import { validateField } from "@/lib/validation/validateField";
 
 export type TrialFormData = {
   parentName: string;
@@ -55,6 +56,18 @@ const [errors, setErrors] = useState<Record<string, string>>({});
       [field]: value,
     }));
   };
+
+const updateAndValidate = (
+  field: keyof TrialFormData,
+  value: any
+) => {
+  updateField(field, value);
+
+  setErrors((prev) => ({
+    ...prev,
+    [field]: validateField(field as any, value),
+  }));
+};
 
   const submitTrial = async () => {
     try {
@@ -118,6 +131,7 @@ const [errors, setErrors] = useState<Record<string, string>>({});
           <ParentStep
             data={formData}
             updateField={updateField}
+            updateAndValidate={updateAndValidate}
             errors={errors}
             setErrors={setErrors}
             onNext={() => setStep(2)}
@@ -127,6 +141,8 @@ const [errors, setErrors] = useState<Record<string, string>>({});
             loading={loading}
             data={formData}
             updateField={updateField}
+            updateAndValidate={updateAndValidate}
+            errors={errors}
             onBack={() => setStep(1)}
             onSubmit={submitTrial}
           />

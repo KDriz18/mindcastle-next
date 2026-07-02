@@ -9,6 +9,7 @@ import { TIMEZONES } from "@/constants/timezones";
 import countries from "react-select-country-list";
 import type { TrialFormData } from "./TrialForm";
 import { trialBookingSchema } from "@/lib/validation/trialBooking";
+import { validateField } from "@/lib/validation/validateField";
 
 type Props = {
   data: TrialFormData;
@@ -16,6 +17,12 @@ type Props = {
     field: keyof TrialFormData,
     value: any
   ) => void;
+
+  updateAndValidate: (
+  field: keyof TrialFormData,
+  value: any
+) => void;
+
   errors: Record<string, string>;
 setErrors: React.Dispatch<
   React.SetStateAction<Record<string, string>>
@@ -26,6 +33,7 @@ setErrors: React.Dispatch<
 export default function ParentStep({
   data,
   updateField,
+  updateAndValidate,
   errors,
   setErrors,
   onNext,
@@ -69,25 +77,27 @@ export default function ParentStep({
           </label>
 
           <input
-            type="text"
-            value={data.parentName}
-            onChange={(e) => {
-  const value = e.target.value;
+  type="text"
+  value={data.parentName}
+  onChange={(e) =>
+  updateAndValidate(
+    "parentName",
+    e.target.value
+  )
+}
+  placeholder="Please Enter Your Name"
+  className={`w-full rounded-2xl border px-5 py-4 outline-none transition-colors ${
+  errors.parentName
+    ? "border-red-500 focus:border-red-500"
+    : "border-[#E5E7EB] focus:border-[#C8A46A]"
+}`}
+/>
 
-  updateField("email", value);
-
-  const result = trialBookingSchema.shape.email.safeParse(value);
-
-  setErrors((prev) => ({
-    ...prev,
-    email: result.success
-      ? ""
-      : result.error.issues[0].message,
-  }));
-}}
-            placeholder="Please Enter Your Name"
-            className="w-full rounded-2xl border border-[#E5E7EB] px-5 py-4 outline-none focus:border-[#C8A46A]"
-          />
+{errors.parentName && (
+  <p className="mt-2 text-sm text-red-500">
+    {errors.parentName}
+  </p>
+)}
         </div>
 
         <div>
@@ -96,19 +106,27 @@ export default function ParentStep({
           </label>
 
           <input
-            type="email"
-            value={data.email}
-            onChange={(e) =>
-              updateField("email", e.target.value)
-            }
-            placeholder="Please Enter Your E-Mail Address"
-            className={`w-full rounded-2xl border px-5 py-4 outline-none transition-colors ${
-  errors.email
-    ? "border-red-500 focus:border-red-500"
-    : "border-[#E5E7EB] focus:border-[#C8A46A]"
-}`}
-          />
-          {errors.email && (
+  type="email"
+  value={data.email}
+  onChange={(e) => {
+  const value = e.target.value;
+
+  updateField("email", value);
+
+  setErrors((prev) => ({
+    ...prev,
+    email: validateField("email", value),
+  }));
+}}
+  placeholder="Please Enter Your E-Mail Address"
+  className={`w-full rounded-2xl border px-5 py-4 outline-none transition-colors ${
+    errors.email
+      ? "border-red-500 focus:border-red-500"
+      : "border-[#E5E7EB] focus:border-[#C8A46A]"
+  }`}
+/>
+
+{errors.email && (
   <p className="mt-2 text-sm text-red-500">
     {errors.email}
   </p>
@@ -124,12 +142,31 @@ export default function ParentStep({
   international
   defaultCountry="IN"
   value={data.contactNumber}
-  onChange={(value) =>
-    updateField("contactNumber", value || "")
-  }
+  onChange={(value) => {
+  updateField("contactNumber", value || "");
+
+  setErrors((prev) => ({
+    ...prev,
+    contactNumber: validateField(
+      "contactNumber",
+      value || ""
+    ),
+  }));
+}}
   placeholder="Enter phone number"
-  className="w-full rounded-2xl border border-[#E5E7EB] px-5 py-4 focus-within:border-[#C8A46A]"
+  className={`w-full rounded-2xl border px-5 py-4 transition-colors ${
+  errors.contactNumber
+    ? "border-red-500"
+    : "border-[#E5E7EB]"
+}`}
 />
+
+{errors.contactNumber && (
+  <p className="mt-2 text-sm text-red-500">
+    {errors.contactNumber}
+  </p>
+)}
+
         </div>
 
         <div>
